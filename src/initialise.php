@@ -16,7 +16,7 @@ class initialise
         // ┌─────────────────────────────────────────────────────────────────────────┐
         // │                Register filter for page builder to use.    		     │
         // └─────────────────────────────────────────────────────────────────────────┘
-        // new filters\filter_module;
+        new construct\yt_lite;
         
     }
 
