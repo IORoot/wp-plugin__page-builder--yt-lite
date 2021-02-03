@@ -22,6 +22,7 @@ class initialise
         // │                Register filters for the HTML output.    		         │
         // └─────────────────────────────────────────────────────────────────────────┘
         new construct\moustaches\post;
+        new construct\moustaches\date;
         
     }
 

@@ -7,7 +7,7 @@ class post
 
     public function __construct()
     {
-        add_filter('yt_lite_html_filter', [$this,'callback'], 10, 2);
+        add_filter('yt_lite_html_filter', [$this,'callback'], 20, 2);
     }
 
     public function callback($html, $post)

@@ -17,14 +17,12 @@ class yt_lite
     {
         $this->organism = $organism;
 
-        $image = $this->image();
-
         $code =  '<lite-youtube ';
         $code .= 'class="'.$this->organism['classes'].'" ';
         $code .= 'videoid="'.$this->source().'" ';
         $code .= 'playlabel="'.$this->organism['play_label'].'" ';
         $code .= 'params="'.$this->organism['params'].'" ';
-        $code .= $image;
+        $code .= $this->image();
         $code .= '>';
         $code .= $this->html();
         $code .= '</lite-youtube>';
@@ -33,22 +31,6 @@ class yt_lite
     }
 
 
-    private function image()
-    {
-        $image = 'style="background-image: url(\'';
-
-        
-        if (!empty($this->organism['image'])){
-            $image .= $this->organism['image']['url'] . '\');"';
-            return $image;
-        }
-
-        if (!empty($this->organism['image_url'])){
-            $image .= $this->organism['image_url'] . '\');"';
-            return $image;
-        }
-
-    }
 
 
     private function source()
@@ -58,17 +40,37 @@ class yt_lite
         $this->source = new $namespaced;
         $this->source->set_config($this->organism);
         $this->source->run();
+
+        if ('query' == $this->organism['input_type']) {
+            $this->organism['post'] = $this->source->get_post();
+        }
+
         return $this->source->get_result();
+    }
+
+    private function image()
+    {
+
+        $image_type = $this->organism['image_type'];
+        $namespaced = '\\andyp\\pagebuilder\\yt_lite\\construct\\image\\' . $image_type;
+        $this->image = new $namespaced;
+        $this->image->set_config($this->organism);
+        $this->image->run();
+
+        $image = 'style="background-image: url(\'';
+        $image .= $this->image->get_result();
+        $image .= '\');"';
+        
+        return $image;
     }
 
     private function html()
     {
         if ('query' == $this->organism['input_type']){
-            $post = $this->source->get_post();
-            return apply_filters('yt_lite_html_filter', $this->organism['html'], $post);
+            return apply_filters('yt_lite_html_filter', $this->organism['html'], $this->organism['post']);
         }
         
         return $this->organism['html'];
     }
-
+    
 }
