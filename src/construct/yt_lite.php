@@ -21,7 +21,7 @@ class yt_lite
 
         $code =  '<lite-youtube ';
         $code .= 'class="'.$this->organism['classes'].'" ';
-        $code .= 'videoid="'.$this->organism['video_id'].'" ';
+        $code .= 'videoid="'.$this->source().'" ';
         $code .= 'playlabel="'.$this->organism['play_label'].'" ';
         $code .= 'params="'.$this->organism['params'].'" ';
         $code .= $image;
@@ -48,8 +48,17 @@ class yt_lite
             return $image;
         }
 
+    }
 
 
+    private function source()
+    {
+        $source_type = $this->organism['input_type'];
+        $namespaced = '\\andyp\\pagebuilder\\yt_lite\\construct\\sources\\' . $source_type;
+        $source = new $namespaced;
+        $source->set_config($this->organism);
+        $source->run();
+        return $source->get_result();
     }
 
 }
