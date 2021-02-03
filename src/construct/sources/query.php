@@ -7,6 +7,8 @@ class query
     
     private $config;
 
+    private $post;
+
     private $result;
 
     public function set_config($config)
@@ -26,6 +28,11 @@ class query
         return $this->result;
     }
 
+    public function get_post()
+    {
+        return $this->post;
+    }
+
     private function run_query()
     {
         if (empty($this->config['query'])){ return; }
@@ -43,6 +50,9 @@ class query
         $field = $this->config['video_id_field'];
         $meta = get_post_meta($this->posts[0]->ID);
         $this->result = $meta[$field][0];
+
+        $this->post['post'] = $this->posts[0];
+        $this->post['meta'] = $meta;
         
     }
 
@@ -56,6 +66,9 @@ class query
         $key = rand(0, $count - 1);
         $meta = get_post_meta($this->posts[$key]->ID);
         $this->result = $meta[$field][0];
+
+        $this->post['post'] = $this->posts[$key];
+        $this->post['meta'] = $meta;
     }
 
 }

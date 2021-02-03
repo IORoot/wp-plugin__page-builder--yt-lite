@@ -26,7 +26,7 @@ class yt_lite
         $code .= 'params="'.$this->organism['params'].'" ';
         $code .= $image;
         $code .= '>';
-        $code .= $this->organism['html'];
+        $code .= $this->html();
         $code .= '</lite-youtube>';
 
         return $code;
@@ -55,10 +55,20 @@ class yt_lite
     {
         $source_type = $this->organism['input_type'];
         $namespaced = '\\andyp\\pagebuilder\\yt_lite\\construct\\sources\\' . $source_type;
-        $source = new $namespaced;
-        $source->set_config($this->organism);
-        $source->run();
-        return $source->get_result();
+        $this->source = new $namespaced;
+        $this->source->set_config($this->organism);
+        $this->source->run();
+        return $this->source->get_result();
+    }
+
+    private function html()
+    {
+        if ('query' == $this->organism['input_type']){
+            $post = $this->source->get_post();
+            return apply_filters('yt_lite_html_filter', $this->organism['html'], $post);
+        }
+        
+        return $this->organism['html'];
     }
 
 }

@@ -17,6 +17,11 @@ class initialise
         // │                Register filter for page builder to use.    		     │
         // └─────────────────────────────────────────────────────────────────────────┘
         new construct\yt_lite;
+
+        // ┌─────────────────────────────────────────────────────────────────────────┐
+        // │                Register filters for the HTML output.    		         │
+        // └─────────────────────────────────────────────────────────────────────────┘
+        new construct\moustaches\post;
         
     }
 
